@@ -1,0 +1,900 @@
+// Portfolio styles. Colours are custom properties so the Display menu can switch theme
+// and text size without reloading. Every text/background pair meets WCAG AA (see test/contrast.test.ts).
+
+:root {
+  --paper: #f6f7fb;
+  --surface: #ffffff;
+  --ink: #1b2140;
+  --ink-soft: #4b5372;
+  --line: #dfe2ec;
+  --line-strong: #858ba5;
+  --sun: #f5c518;
+  --on-sun: #1b2140;
+  --link: #0a6573;
+  --focus: #1849d6;
+  --tile-hover: #eef0f7;
+
+  --text-scale: 1;
+  --font-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', 'Segoe UI', system-ui, sans-serif;
+  --measure: 40rem;
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+  --radius: 14px;
+
+  color-scheme: light;
+}
+
+@mixin dark {
+  --paper: #12152a;
+  --surface: #1a1e37;
+  --ink: #eef0fa;
+  --ink-soft: #b1b6cf;
+  --line: #2b3052;
+  --line-strong: #6f7598;
+  --sun: #f5c518;
+  --on-sun: #12152a;
+  --link: #7ed6e3;
+  --focus: #f5c518;
+  --tile-hover: #232846;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    @include dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  @include dark;
+}
+
+// High contrast: pure black on white, underlined links, heavier rules and outlines.
+:root[data-theme='contrast'] {
+  --paper: #ffffff;
+  --surface: #ffffff;
+  --ink: #000000;
+  --ink-soft: #1a1a1a;
+  --line: #000000;
+  --line-strong: #000000;
+  --sun: #ffd400;
+  --on-sun: #000000;
+  --link: #0000c2;
+  --focus: #0000c2;
+  --tile-hover: #f0f0f0;
+  color-scheme: light;
+}
+
+// ── Base ────────────────────────────────────────────────────────────────────
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: calc(100% * var(--text-scale));
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+
+  @media (prefers-reduced-motion: reduce) {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  line-height: 1.15;
+  margin: 0;
+  text-wrap: balance;
+}
+
+p {
+  margin: 0 0 1rem;
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--link);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+
+  &:hover {
+    text-decoration-thickness: 2px;
+  }
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.wrap {
+  width: 100%;
+  max-width: 74rem;
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -10rem;
+  z-index: 100;
+  padding: 0.75rem 1rem;
+  font-weight: 700;
+  color: var(--on-sun);
+  background: var(--sun);
+  border-radius: 8px;
+
+  &:focus {
+    top: 1rem;
+  }
+}
+
+// ── Header ──────────────────────────────────────────────────────────────────
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  min-height: 4rem;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-inline-end: auto;
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.monogram {
+  display: inline-grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  color: var(--on-sun);
+  background: var(--sun);
+  border-radius: 10px;
+}
+
+.site-nav ul {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.site-nav a {
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 500;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+@media (max-width: 44rem) {
+  // Small screens: the header scrolls away, and the section links get their own row.
+  .site-header {
+    position: static;
+  }
+
+  .header-inner {
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+    padding-block: 0.75rem;
+  }
+
+  .site-nav {
+    order: 3;
+    width: 100%;
+
+    ul {
+      flex-wrap: wrap;
+      gap: 0.25rem 1.25rem;
+    }
+
+    a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 2.75rem;
+    }
+  }
+
+  // Hidden visually on small screens but kept as the link's accessible name.
+  .brand-name {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}
+
+// Display menu: a native <details>, so it opens with Enter or Space with no extra code.
+.display {
+  position: relative;
+
+  summary {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.5rem;
+    padding: 0 0.9rem;
+    font-weight: 700;
+    border: 2px solid var(--line-strong);
+    border-radius: 999px;
+    cursor: pointer;
+    list-style: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+  }
+
+  &[open] summary {
+    border-color: var(--ink);
+  }
+}
+
+.display-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.5rem);
+  display: grid;
+  gap: 1rem;
+  width: 15rem;
+  padding: 1rem 1.25rem;
+  background: var(--surface);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: 0 12px 32px rgb(0 0 0 / 0.16);
+
+  fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  legend {
+    padding: 0;
+    margin-bottom: 0.25rem;
+    font-weight: 700;
+  }
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 2rem;
+    cursor: pointer;
+  }
+
+  input {
+    width: 1.1rem;
+    height: 1.1rem;
+    margin: 0;
+    accent-color: var(--ink);
+  }
+}
+
+// ── Hero ────────────────────────────────────────────────────────────────────
+
+.hero {
+  padding-block: clamp(3rem, 9vw, 7rem) clamp(3rem, 7vw, 5rem);
+  border-bottom: 1px solid var(--line);
+}
+
+.hero-inner {
+  display: grid;
+  gap: 2rem 4rem;
+
+  @media (min-width: 60rem) {
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    align-items: end;
+  }
+}
+
+// The headline is the type moment: very large, tight, set in the display face at its
+// largest optical size. A thick yellow bar sits under it as the one decorative mark.
+.hero-title {
+  font-size: clamp(3rem, 8.5vw, 6.25rem);
+  font-weight: 800;
+  font-variation-settings: 'opsz' 96;
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  max-width: 11ch;
+
+  &::after {
+    content: '';
+    display: block;
+    width: 5.5rem;
+    height: 0.6rem;
+    margin-top: 1.75rem;
+    background: var(--sun);
+    border-radius: 2px;
+  }
+}
+
+.lead {
+  font-size: 1.15rem;
+  max-width: var(--measure);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1.75rem 0 2rem;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 3rem;
+  padding: 0 1.4rem;
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: none;
+  background: var(--surface);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+
+  &:hover {
+    background: var(--tile-hover);
+  }
+}
+
+.button-primary {
+  color: var(--on-sun);
+  background: var(--sun);
+  border-color: var(--sun);
+
+  &:hover {
+    background: var(--sun);
+    border-color: var(--ink);
+  }
+}
+
+.facts {
+  display: grid;
+  gap: 0.6rem;
+  font-size: 0.98rem;
+  color: var(--ink-soft);
+
+  li {
+    padding-left: 1.1rem;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.55em;
+      width: 0.5rem;
+      height: 0.5rem;
+      background: var(--sun);
+      border-radius: 2px;
+    }
+  }
+
+  strong {
+    color: var(--ink);
+  }
+}
+
+// ── Sections ────────────────────────────────────────────────────────────────
+
+.section {
+  padding-block: clamp(3.5rem, 8vw, 6rem);
+  border-bottom: 1px solid var(--line);
+  scroll-margin-top: 4rem;
+}
+
+.section h2 {
+  font-size: clamp(2.1rem, 4.6vw, 3.25rem);
+  font-weight: 750;
+  letter-spacing: -0.025em;
+  margin-bottom: 1rem;
+}
+
+.section-intro {
+  max-width: var(--measure);
+  color: var(--ink-soft);
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.subhead {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 3rem 0 1.25rem;
+}
+
+// ── Projects ────────────────────────────────────────────────────────────────
+
+.projects {
+  display: grid;
+  gap: 2.5rem;
+}
+
+.project {
+  display: grid;
+  gap: 1.5rem 3rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+
+  @media (min-width: 60rem) {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    align-items: center;
+  }
+
+  h4 {
+    font-size: 1.75rem;
+    letter-spacing: -0.015em;
+    margin-bottom: 0.75rem;
+  }
+}
+
+.project-media {
+  display: block;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+}
+
+.project-media-phones {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 0;
+
+  img {
+    border-radius: 12px;
+    border: 1px solid var(--line);
+  }
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0 0 1rem;
+
+  li {
+    padding: 0.15rem 0.6rem;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+  }
+}
+
+.project-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin: 0;
+  font-weight: 700;
+}
+
+// ── Case studies ────────────────────────────────────────────────────────────
+
+.cases {
+  display: grid;
+  gap: 1.25rem;
+
+  @media (min-width: 52rem) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.case {
+  padding: 1.5rem 1.5rem 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-top: 6px solid var(--sun);
+  border-radius: var(--radius);
+
+  h4 {
+    font-size: 1.4rem;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.4rem;
+  }
+
+  details {
+    margin-top: 0.25rem;
+  }
+
+  summary {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    font-weight: 700;
+    color: var(--link);
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+}
+
+.case-context {
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+}
+
+.case-body {
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--line);
+  margin-top: 0.5rem;
+
+  h5 {
+    font-size: 1.05rem;
+    margin: 1rem 0 0.25rem;
+  }
+}
+
+// ── Apps ────────────────────────────────────────────────────────────────────
+
+.features {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.feature {
+  display: grid;
+  gap: 1.25rem 2.5rem;
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+
+  @media (min-width: 60rem) {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    align-items: center;
+  }
+
+  h3 {
+    font-size: 1.6rem;
+    letter-spacing: -0.015em;
+  }
+
+  a {
+    font-weight: 700;
+  }
+}
+
+.feature-icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 22%;
+  margin-bottom: 0.75rem;
+}
+
+.feature-tagline {
+  color: var(--ink-soft);
+  margin-bottom: 0.75rem;
+}
+
+// Screenshots keep their own shape (phone or landscape) and scroll sideways.
+.filmstrip {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  padding: 0.25rem 0.25rem 0.75rem;
+  scroll-snap-type: x proximity;
+
+  li {
+    flex: none;
+    scroll-snap-align: start;
+  }
+
+  img {
+    height: 17.5rem;
+    width: auto;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+  }
+}
+
+// The wall: every app at a glance. This is the one big visual moment on the page.
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0 1rem;
+  font: inherit;
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--surface);
+  border: 2px solid var(--line-strong);
+  border-radius: 999px;
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--ink);
+  }
+
+  &[aria-pressed='true'] {
+    color: var(--on-sun);
+    background: var(--sun);
+    border-color: var(--ink);
+  }
+}
+
+.filter-count {
+  font-weight: 500;
+}
+
+.wall-status {
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  margin-bottom: 1.25rem;
+}
+
+.wall {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(7.25rem, 1fr));
+  gap: 0.5rem;
+}
+
+.tile {
+  &[hidden] {
+    display: none;
+  }
+
+  a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+    height: 100%;
+    padding: 0.9rem 0.5rem 0.8rem;
+    text-align: center;
+    text-decoration: none;
+    color: var(--ink);
+    border-radius: var(--radius);
+
+    &:hover {
+      background: var(--tile-hover);
+    }
+  }
+
+  img {
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 22%;
+    margin-bottom: 0.45rem;
+    box-shadow: 0 1px 0 var(--line);
+  }
+}
+
+.tile-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1.25;
+}
+
+.tile-tagline {
+  font-size: 0.82rem;
+  line-height: 1.3;
+  color: var(--ink-soft);
+}
+
+.wall-more {
+  margin-top: 1.5rem;
+  font-weight: 700;
+}
+
+// ── How I work ──────────────────────────────────────────────────────────────
+
+.principles {
+  display: grid;
+  gap: 2rem 3rem;
+  margin-top: 1.5rem;
+
+  @media (min-width: 52rem) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  h3 {
+    font-size: 1.35rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    max-width: 34rem;
+    color: var(--ink-soft);
+  }
+}
+
+// ── Experience and skills ───────────────────────────────────────────────────
+
+.two-col {
+  display: grid;
+  gap: 3.5rem 5rem;
+
+  @media (min-width: 60rem) {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  }
+}
+
+// A timeline is a real sequence, so it gets a rule and markers down the side.
+.timeline {
+  position: relative;
+  margin-top: 1rem;
+  padding-left: 1.75rem;
+  border-left: 3px solid var(--line);
+
+  > li {
+    position: relative;
+    padding-bottom: 2rem;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: calc(-1.75rem - 9px);
+      top: 0.35rem;
+      width: 15px;
+      height: 15px;
+      background: var(--sun);
+      border: 3px solid var(--paper);
+      border-radius: 50%;
+      box-shadow: 0 0 0 2px var(--ink);
+    }
+  }
+
+  h3 {
+    font-size: 1.3rem;
+  }
+
+  ul {
+    padding-left: 1.1rem;
+    margin: 0.25rem 0 0;
+    color: var(--ink-soft);
+  }
+
+  li li {
+    margin-bottom: 0.35rem;
+  }
+}
+
+.role-meta {
+  margin: 0.2rem 0 0.25rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+}
+
+.skills {
+  margin: 1rem 0 0;
+
+  dt {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-top: 1.25rem;
+  }
+
+  dd {
+    margin: 0.2rem 0 0;
+    color: var(--ink-soft);
+  }
+}
+
+// ── Contact ─────────────────────────────────────────────────────────────────
+
+.section-contact {
+  border-bottom: 0;
+}
+
+.contact-lead {
+  max-width: var(--measure);
+  font-size: 1.15rem;
+}
+
+.contact-email {
+  margin: 1.5rem 0 2rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 5vw, 2.75rem);
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+
+  a {
+    color: var(--ink);
+    text-decoration-color: var(--sun);
+    text-decoration-thickness: 0.18em;
+    text-underline-offset: 0.18em;
+  }
+}
+
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 2rem;
+  font-weight: 700;
+}
+
+.site-footer {
+  padding-block: 2rem;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  border-top: 1px solid var(--line);
+
+  p {
+    margin: 0;
+  }
+}
+
+// ── High contrast extras ────────────────────────────────────────────────────
+
+:root[data-theme='contrast'] {
+  .project,
+  .case,
+  .feature,
+  .tile a {
+    border: 2px solid #000;
+  }
+
+  .tile a:hover {
+    outline: 2px solid #000;
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "sana-khan-portfolio",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Portfolio of Sana Faraz Khan, UI engineer and UI/UX designer.",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "lint": "oxlint",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/jsdom": "^30.0.0",
+    "@types/node": "^24.19.2",
+    "axe-core": "^4.14.1",
+    "jsdom": "^31.0.1",
+    "oxlint": "^1.94.0",
+    "sass": "^1.108.2",
+    "typescript": "~7.0.2",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.1"
+  }
+}
