@@ -87,12 +87,8 @@ describe.skipIf(!existsSync(built))('built page', () => {
     expect(document.documentElement.outerHTML).not.toMatch(/966|551\s*2236/);
   });
 
-  it('links to CV files that exist', () => {
-    const cvLinks = [...document.querySelectorAll<HTMLAnchorElement>('a[href^="/cv/"]')];
-    expect(cvLinks.length).toBe(2);
-    for (const link of cvLinks) {
-      expect(existsSync(new URL(`../public${link.getAttribute('href')}`, import.meta.url))).toBe(true);
-    }
+  it('offers no CV downloads (CVs are shared directly)', () => {
+    expect(document.querySelectorAll('a[href$=".pdf"]')).toHaveLength(0);
   });
 
   it('has no axe-core violations (contrast is covered by the tests above)', async () => {

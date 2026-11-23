@@ -131,8 +131,9 @@ img {
   display: block;
 }
 
-ul[role='list'],
-ol[role='list'] {
+// :where() keeps this reset at zero specificity, so a component's own class (for example
+// .timeline padding) always wins over it.
+:where(ul, ol)[role='list'] {
   list-style: none;
   margin: 0;
   padding: 0;

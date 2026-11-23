@@ -11,7 +11,7 @@ purpose: the page is fast, readable without JavaScript, and easy for search engi
   [Pocket](https://github.com/sana-khan/pocket-budget-rn)), and four anonymised case studies from client work under NDA
 - **Apps and games** — four featured apps with screenshots, and a filterable wall of every app published as greybits
   on Google Play
-- **How I work, experience, skills and contact**, with CVs for UI engineering and UI/UX design roles
+- **How I work, experience, skills and contact**
 
 ## How it's built
 
@@ -28,7 +28,7 @@ purpose: the page is fast, readable without JavaScript, and easy for search engi
 
 - WCAG AA contrast for every text and control colour pair in all three themes, read straight from the stylesheet
 - an axe-core scan of the built page
-- that every app links to its Play Store page, screenshots have descriptions, CV links work, and no phone number is
+- that every app links to its Play Store page, screenshots have descriptions, and no CV or phone number is
   published
 
 ## Run it
